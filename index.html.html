@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700;800&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 10px;
+            background: transparent;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .grid-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Card Principal Estilo BSZone */
+        .card-tracker {
+            background: linear-gradient(135deg, #121316 0%, #1c1d22 100%);
+            border: 2px solid #2d3139;
+            border-radius: 12px;
+            width: 160px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+
+        .card-prata { border-bottom: 4px solid #8a95a5; }
+        .card-ouro { border-bottom: 4px solid #ffae00; }
+        .card-diamante { border-bottom: 4px solid #00e5ff; }
+
+        .icon-container { font-size: 24px; margin-bottom: 5px; }
+        .icon-prata { color: #b0b9c6; }
+        .icon-ouro { color: #ffae00; }
+        .icon-diamante { color: #00e5ff; }
+
+        .rank-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .text-prata { color: #d1d8e0; }
+        .text-ouro { color: #ffae00; }
+        .text-diamante { color: #00e5ff; }
+
+        .number-box {
+            background: #090a0c;
+            border: 1px solid #252830;
+            border-radius: 6px;
+            width: 85%;
+            padding: 6px 0;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .count-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 1;
+            color: #ffffff;
+        }
+
+        /* Botões Manuais de Controle (+ e -) */
+        .control-btns {
+            display: flex;
+            gap: 10px;
+            width: 85%;
+        }
+
+        .btn {
+            flex: 1;
+            border: 1px solid #343a40;
+            border-radius: 4px;
+            padding: 6px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            text-align: center;
+        }
+
+        .btn-add { background: #198754; }
+        .btn-add:hover { background: #157347; transform: scale(1.05); }
+        .btn-sub { background: #dc3545; }
+        .btn-sub:hover { background: #bb2d3b; transform: scale(1.05); }
+
+        /* Barra de Total */
+        .total-bar {
+            background: #0d0e12;
+            border: 2px solid #22252c;
+            border-radius: 6px;
+            padding: 8px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #727b8a;
+        }
+        #total-num { color: #ff3b30; font-size: 16px; font-weight: 900; margin-left: 6px; }
+
+        .bump { animation: impact 0.2s ease-in-out; }
+        @keyframes impact {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid-container">
+    <div class="card-tracker card-prata" id="box-prata">
+        <div class="icon-container icon-prata"><i class="fa-solid fa-shield-halved"></i></div>
+        <span class="rank-title text-prata">Prata</span>
+        <div class="number-box"><span class="count-value" id="num-prata">0</span></div>
+        <div class="control-btns">
+            <div class="btn btn-sub" onclick="changeKill('prata', -1)">-</div>
+            <div class="btn btn-add" onclick="changeKill('prata', 1)">+</div>
+        </div>
+    </div>
+
+    <div class="card-tracker card-ouro" id="box-ouro">
+        <div class="icon-container icon-ouro"><i class="fa-solid fa-crown"></i></div>
+        <span class="rank-title text-ouro">Ouro</span>
+        <div class="number-box"><span class="count-value" id="num-ouro">0</span></div>
+        <div class="control-btns">
+            <div class="btn btn-sub" onclick="changeKill('ouro', -1)">-</div>
+            <div class="btn btn-add" onclick="changeKill('ouro', 1)">+</div>
+        </div>
+    </div>
+
+    <div class="card-tracker card-diamante" id="box-diamante">
+        <div class="icon-container icon-diamante"><i class="fa-solid fa-gem"></i></div>
+        <span class="rank-title text-diamante">Diamante</span>
+        <div class="number-box"><span class="count-value" id="num-diamante">0</span></div>
+        <div class="control-btns">
+            <div class="btn btn-sub" onclick="changeKill('diamante', -1)">-</div>
+            <div class="btn btn-add" onclick="changeKill('diamante', 1)">+</div>
+        </div>
+    </div>
+</div>
+
+<div class="total-bar">Total de Abates: <span id="total-num">0</span></div>
+
+<script>
+    let counts = { prata: 0, ouro: 0, diamante: 0 };
+    const elements = {
+        prata: document.getElementById('num-prata'),
+        ouro: document.getElementById('num-ouro'),
+        diamante: document.getElementById('num-diamante'),
+        total: document.getElementById('total-num')
+    };
+    const boxes = {
+        prata: document.getElementById('box-prata'),
+        ouro: document.getElementById('box-ouro'),
+        diamante: document.getElementById('box-diamante')
+    };
+
+    function changeKill(type, amount) {
+        if (amount === -1 && counts[type] === 0) return;
+        counts[type] += amount;
+        
+        elements[type].innerText = counts[type];
+        elements.total.innerText = counts.prata + counts.ouro + counts.diamante;
+
+        boxes[type].classList.remove('bump');
+        void boxes[type].offsetWidth; 
+        boxes[type].classList.add('bump');
+    }
+</script>
+</body>
+</html>
