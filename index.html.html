@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <!-- Importação de Fontes e Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700;800&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background: transparent;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Container Principal */
+        .grid-container {
+            display: flex;
+            gap: 25px;
+        }
+
+        /* Base do Card Estilo BSZone (Militar / Gamer Pesado) */
+        .card-tracker {
+            background: linear-gradient(135deg, #121316 0%, #1c1d22 100%);
+            border: 2px solid #2d3139;
+            border-radius: 12px;
+            width: 170px;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(0,0,0,0.5);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Detalhes de Borda Temática BSZone e Iluminação por Categoria */
+        .card-prata { 
+            border-bottom: 4px solid #8a95a5;
+            box-shadow: 0 0 15px rgba(138, 149, 165, 0.15), 0 15px 35px rgba(0, 0, 0, 0.7);
+        }
+        .card-ouro { 
+            border-bottom: 4px solid #ffae00;
+            box-shadow: 0 0 15px rgba(255, 174, 0, 0.15), 0 15px 35px rgba(0, 0, 0, 0.7);
+        }
+        .card-diamante { 
+            border-bottom: 4px solid #00e5ff;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), 0 15px 35px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Área do Ícone Metálico */
+        .icon-container {
+            font-size: 28px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+        .icon-prata { color: #b0b9c6; }
+        .icon-ouro { color: #ffae00; }
+        .icon-diamante { color: #00e5ff; }
+
+        /* Títulos das Categorias (Fonte Estilo Placar) */
+        .rank-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        .text-prata { color: #d1d8e0; text-shadow: 0 0 5px rgba(209, 216, 224, 0.5); }
+        .text-ouro { color: #ffae00; text-shadow: 0 0 8px rgba(255, 174, 0, 0.6); }
+        .text-diamante { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.7); }
+
+        /* Display Numérico Sólido (Estilo Caixa de Placar do Jogo) */
+        .number-box {
+            background: #090a0c;
+            border: 1px solid #252830;
+            border-radius: 6px;
+            width: 80%;
+            padding: 8px 0;
+            text-align: center;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .count-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* Barra de Total Inferior Robusta */
+        .total-bar {
+            background: #0d0e12;
+            border: 2px solid #22252c;
+            border-radius: 6px;
+            padding: 10px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #727b8a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+        }
+        #total-num {
+            color: #ff3b30;
+            font-size: 18px;
+            font-weight: 900;
+            margin-left: 8px;
+            text-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
+        }
+
+        /* Animação Impactante de Impacto ao Marcar Kill */
+        .bump { animation: bszoneImpact 0.2s ease-in-out; }
+        @keyframes bszoneImpact {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.08); filter: brightness(1.4); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid-container">
+    <!-- Card Prata -->
+    <div class="card-tracker card-prata" id="box-prata">
+        <div class="icon-container icon-prata"><i class="fa-solid fa-shield-halved"></i></div>
+        <span class="rank-title text-prata">Prata</span>
+        <div class="number-box">
+            <span class="count-value" id="num-prata">0</span>
+        </div>
+    </div>
+
+    <!-- Card Ouro -->
+    <div class="card-tracker card-ouro" id="box-ouro">
+        <div class="icon-container icon-ouro"><i class="fa-solid fa-crown"></i></div>
+        <span class="rank-title text-ouro">Ouro</span>
+        <div class="number-box">
+            <span class="count-value" id="num-ouro">0</span>
+        </div>
+    </div>
+
+    <!-- Card Diamante -->
+    <div class="card-tracker card-diamante" id="box-diamante">
+        <div class="icon-container icon-diamante"><i class="fa-solid fa-gem"></i></div>
+        <span class="rank-title text-diamante">Diamante</span>
+        <div class="number-box">
+            <span class="count-value" id="num-diamante">0</span>
+        </div>
+    </div>
+</div>
+
+<!-- Barra de Total Geral -->
+<div class="total-bar">
+    Total de Abates: <span id="total-num">0</span>
+</div>
+
+<script>
+    let prata = 0, ouro = 0, diamante = 0;
+
+    const elPrata = document.getElementById('num-prata');
+    const elOuro = document.getElementById('num-ouro');
+    const elDiamante = document.getElementById('num-diamante');
+    const elTotal = document.getElementById('total-num');
+
+    const boxPrata = document.getElementById('box-prata');
+    const boxOuro = document.getElementById('box-ouro');
+    const boxDiamante = document.getElementById('box-diamante');
+
+    // Mapeamento idêntico: Teclas 1,2,3 somam / 4,5,6 subtraem no Numpad
+    window.addEventListener('keydown', (e) => {
+        switch(e.key) {
+            case '1': 
+                prata++; 
+                triggerUpdate(elPrata, boxPrata, prata);
+                break;
+            case '4': 
+                if(prata > 0) { prata--; triggerUpdate(elPrata, boxPrata, prata); }
+                break;
+
+            case '2': 
+                ouro++; 
+                triggerUpdate(elOuro, boxOuro, ouro);
+                break;
+            case '5': 
+                if(ouro > 0) { ouro--; triggerUpdate(elOuro, boxOuro, ouro); }
+                break;
+
+            case '3': 
+                diamante++; 
+                triggerUpdate(elDiamante, boxDiamante, diamante);
+                break;
+            case '6': 
+                if(diamante > 0) { diamante--; triggerUpdate(elDiamante, boxDiamante, diamante); }
+                break;
+        }
+    });
+
+    function triggerUpdate(element, box, value) {
+        element.innerText = value;
+        elTotal.innerText = prata + ouro + diamante;
+
+        box.classList.remove('bump');
+        void box.offsetWidth; 
+        box.classList.add('bump');
+    }
+</script>
+</body>
+</html>
