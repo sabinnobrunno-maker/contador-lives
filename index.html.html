@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 10px;
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Container estilo Vidro Fosco Moderno */
+        .modern-tracker {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px; /* Bordas bem arredondadas/pílula */
+            padding: 6px 16px;
+            width: fit-content;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Ícone/Indicador de Abate Sutil */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ff0050; /* Vermelho padrão TikTok */
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 8px #ff0050;
+        }
+
+        .label {
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-right: 12px;
+            opacity: 0.9;
+        }
+
+        .count {
+            color: #00f2fe; /* Azul neon para dar contraste com o vermelho */
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        /* Animação de transição de número */
+        .bump {
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); color: #ffffff; }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="modern-tracker">
+    <div class="status-dot"></div>
+    <span class="label">Abates</span>
+    <span class="count" id="numero">0</span>
+</div>
+
+<script>
+    let numKills = 0;
+    const numeroEl = document.getElementById('numero');
+
+    // Atalhos globais (Funcionam enquanto você joga)
+    window.addEventListener('keydown', (e) => {
+        // Altere as teclas aqui se preferir outras (ex: F8 e F9)
+        if (e.key === 'PageUp') { 
+            numKills++;
+            atualizar();
+        } else if (e.key === 'PageDown' && numKills > 0) {
+            numKills--;
+            atualizar();
+        }
+    });
+
+    function atualizar() {
+        numeroEl.innerText = numKills;
+        numeroEl.classList.remove('bump');
+        void numeroEl.offsetWidth; 
+        numeroEl.classList.add('bump');
+    }
+</script>
+</body>
+</html>
